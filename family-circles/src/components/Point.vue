@@ -1,5 +1,5 @@
 <template>
-    <div class="point flex-row">
+    <div class="point-wrp flex-row" v-bind:style='point.position' draggable="true" @dragstart="onDrag" @dragend="onDrop">
       
         <div class="flex-row">
           <span class="point-circle" v-bind:style="point.color"></span>
@@ -27,12 +27,26 @@ export default {
     'textVisability'
   ],
   data:()=>({
-      inEdit: true
+      inEdit: true,
+      dx: 0,
+      dy: 0,
   }),
   methods:{
     onDone(){this.inEdit = false; console.log(this.point)},//console.log(this.$store.state.pointsModule.points)
     onEdit(){this.inEdit = true},
-    onDelete(){alert("can't remove yet")}
+    onDelete(){alert("can't remove yet")},
+    onDrag(e){
+      //let movedPoint = {...this.point, position:{top:e.y+'px', left:e.x+'px'}}
+      //console.log(e.offsetY,e.offsetX)
+      this.dx=e.offsetX;
+      this.dy=e.offsetY;
+      //this.$store.commit('movePoint', movedPoint)
+    },
+    onDrop(e){
+      let movedPoint = {...this.point, position:{top:(e.y - this.dy)+'px', left:(e.x - this.dx)+'px'}}
+      //console.log(e)
+      this.$store.commit('movePoint', movedPoint)
+    },
   },
   
 }
@@ -51,6 +65,9 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.point-wrp{
+  position: absolute;
 }
 .point-circle{
   display: inline-block;
