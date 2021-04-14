@@ -2,31 +2,35 @@
     <div class="point flex-row">
       
         <div class="flex-row">
-          <span class="point-circle" v-bind:style="color"></span>
-          <span v-if="!inEdit" class="point-title">{{title}}</span>
-          <form v-else class="point-edit-inputs flex-row" @submit.prevent="onDone">
-            <input class="point-title-input point-input" type="text"  v-model="title">
-            <input class="point-color-input point-input" type="color" name="point-color" v-bind:value="color.backgroundColor" @input="color.backgroundColor = $event.target.value">
-            <button class="point-edit-done point-button" @click="onDone"><font-awesome-icon icon="check" /></button>
-          </form>
+          <span class="point-circle" v-bind:style="point.color"></span>
+          <div v-if="textVisability" class="point-info flex-row">
+            <span v-if="!inEdit" class="point-title">{{point.title}}</span>
+            <form v-else class="point-edit-inputs flex-row" @submit.prevent="onDone">
+              <input class="point-title-input point-input" type="text"  v-model="point.title">
+              <input class="point-color-input point-input" type="color" name="point-color" v-bind:value="point.color.backgroundColor" @input="point.color.backgroundColor = $event.target.value">
+              <button class="point-edit-done point-button" type="submit" ><font-awesome-icon icon="check" /></button>
+            </form>
+            <button v-if="!inEdit" class="point-edit point-button" @click="onEdit"><font-awesome-icon icon="edit" /></button>
+            <button class="point-delete point-button" @click="onDelete"><font-awesome-icon icon="trash-alt" /></button>
+          </div>
         </div>
-        
-        <button v-if="!inEdit" class="point-edit point-button" @click="onEdit"><font-awesome-icon icon="edit" /></button>
-        <button class="point-delete point-button" @click="onDelete"><font-awesome-icon icon="trash-alt" /></button>
+          
+          
     </div>
 </template>
 
 <script>
 export default {
   name: 'point',
+  props:[
+    'point',
+    'textVisability'
+  ],
   data:()=>({
-      id: 1,
-      title: '',
-      color: {backgroundColor:'#555555'},
       inEdit: true
   }),
   methods:{
-    onDone(){this.inEdit = false},
+    onDone(){this.inEdit = false; console.log(this.point)},//console.log(this.$store.state.pointsModule.points)
     onEdit(){this.inEdit = true},
     onDelete(){alert("can't remove yet")}
   },
@@ -59,13 +63,20 @@ export default {
 .point-button, .point-input{
   background-color: transparent;
   border: none;
-  color: #555555;
+  color: #aaaaaa;
   height: 20px;
   margin-left: 5px;
   padding: 0;
 }
 .point-title-input{
   border-bottom: 1px solid #555555;
+  font-size: 14px;
+  font-style: italic;
+  color: #555555;
+}
+.point-title{
+  font-size: 14px;
+  font-style: italic;
 }
 .point-button:hover{
   color: #333333;

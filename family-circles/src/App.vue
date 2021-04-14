@@ -2,18 +2,21 @@
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <Point/>
+    <!-- <Point/> -->
+    <Field/>
   </div>
 </template>
 
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
-import Point from './components/Point.vue'
+// import Point from '@/components/Point.vue'
+import Field from '@/views/Field.vue'
 export default {
   name: 'App',
   components: {
 //    HelloWorld,
-    Point,
+    // Point,
+    Field,
   }
 }
 </script>
